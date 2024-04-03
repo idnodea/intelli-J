@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>처음 페이지</h1>
+<h2>[[${name}]]</h2>
+<h2 th:text="${name}"></h2>
+<div th:if="${name} == '이순신'">
+    <p>이순신입니다.</p>
+</div>
+<div th:unless="${name} == '영희'">
+    <p>영희가 아닙니다.</p>
+</div>
+<ul>
+    <li th:each="mydata : ${list}">
+        [[${mydata.id}]], [[${mydata.name}]], [[${mydata.mail}]]
+    </li>
+</ul>
+<table th:border="1">
+    <tr><th>번호</th><th>이름</th><th>이메일</th><th>나이</th></tr>
+    <tr th:each="dto : ${list}">
+        <td>[[${dto.id}]]</td>
+        <td>[[${dto.name}]]</td>
+        <td>[[${dto.mail}]]</td>
+        <td>[[${dto.age}]]</td>
+    </tr>
+</table>
+<br/>
+<table th:border="1">
+    <tr><th>번호</th><th>이름</th><th>이메일</th><th>나이</th></tr>
+    <tr th:each="dto : ${list}" th:object="${dto}">
+        <td>[[*{id}]]</td>
+        <td>[[*{name}]]</td>
+        <td>[[*{mail}]]</td>
+        <td>[[*{age}]]</td>
+    </tr>
+</table>
+<br/>
+<table th:border="1">
+    <tr><th>번호</th><th>이름</th><th>이메일</th><th>나이</th></tr>
+    <tr th:each="dto : ${list}" th:object="${dto}">
+        <td th:text="*{id}"></td>
+        <td th:text="*{name}"></td>
+        <td th:text="*{mail}"></td>
+        <td th:text="*{age}"></td>
+    </tr>
+</table>
+</body>
+</html>
