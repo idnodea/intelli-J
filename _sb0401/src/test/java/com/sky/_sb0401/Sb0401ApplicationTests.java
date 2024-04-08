@@ -19,6 +19,8 @@ class Sb0401ApplicationTests {
     @Autowired
     MemoRepository memoRepository;
 
+
+   //0404
     @PersistenceContext
     private EntityManager em;
 
@@ -28,12 +30,31 @@ class Sb0401ApplicationTests {
         System.out.println(memo);
     }
 
+//    @Test
+//    void emTest2(){
+//        List<Memo> list= em.createQuery(
+//                "select m from Memo m", Memo.class)
+//                .getResultList();
+//        list.stream().forEach(e->
+//        {
+//            System.out.println(e);
+//        });
+//    }
     @Test
     void emTest2() {
         List<Memo> list = em.createQuery("from Memo m where m.mno > 5", Memo.class).getResultList();
         list.stream().forEach(e->{
             System.out.println(e);
         });
+    }
+
+    @Test
+    @Transactional
+    void emInsert(){
+        Memo memo = Memo.builder()
+                .memoText("이건 em테스트")
+                .build();
+        em.persist(memo);
     }
 
     @Test

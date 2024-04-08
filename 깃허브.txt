@@ -11,7 +11,7 @@ cd (원하는 폴더)  D:\_dev\java      ../ 윗 폴더로 이동
 git init
 git add .
 git commit -m "first commit"   "주석처리"
-git remote add origin https://github.com/idnodea/intelli-J. git
+git remote add origin https://github.com/idnodea/intelli-J.git
 git push -u origin main
 
 
