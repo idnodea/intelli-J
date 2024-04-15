@@ -9,10 +9,9 @@ import javax.persistence.*;
 import com.shop.dto.ItemFormDto;
 import com.shop.exception.OutOfStockException;
 
-
 //page 75  엔티티매핑 관련 어노테이션
 @Entity
-@Table(name="item") //엔티티와 매핑할 테이블
+@Table(name="item")
 @Getter
 @Setter
 @ToString
@@ -22,6 +21,7 @@ public class Item extends BaseEntity {
     @Column(name="item_id") //p76 @Column어노테이션추가속성, 테이블에 매핑될 칼럼이름
     @GeneratedValue(strategy = GenerationType.AUTO) //p77 기본키생성-jpa구현체가 자동으로 생성전략(기본키생성방법)결정
     private Long id;       //상품 코드
+
     @Column(nullable = false, length = 50)
     private String itemNm; //상품명
 
@@ -57,4 +57,5 @@ public class Item extends BaseEntity {
     public void addStock(int stockNumber){
         this.stockNumber += stockNumber;
     }
+
 }

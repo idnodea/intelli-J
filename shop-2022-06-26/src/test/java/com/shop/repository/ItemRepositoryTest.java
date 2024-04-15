@@ -1,33 +1,38 @@
 package com.shop.repository;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.constant.ItemSellStatus;
 import com.shop.entity.Item;
-import com.shop.entity.QItem;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
+import java.time.LocalDateTime;
+
+import java.util.List;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.shop.entity.QItem;
+import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
+
+import com.querydsl.core.BooleanBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.TestPropertySource;
 import org.thymeleaf.util.StringUtils;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @SpringBootTest
 @TestPropertySource(locations="classpath:application-test.properties")
 class ItemRepositoryTest {
 
+
     @Autowired
     ItemRepository itemRepository;
 
+    // p104영속성컨텍스트를 사용하기 위해  @PersistenceContext사용
     @PersistenceContext
     EntityManager em;
 
@@ -71,7 +76,7 @@ class ItemRepositoryTest {
             Item savedItem = itemRepository.save(item);
         }
     }
-//    public void createItemList(){
+    //    public void createItemList(){
 //        for(int i =1; i<=10; i++){
 //            Item item = new Item();
 //            item.setItemNm("테스트상품"+i);
@@ -84,7 +89,6 @@ class ItemRepositoryTest {
 //        }
 //    }
 
-
     @Test
     @DisplayName("상품명 조회 테스트")
     public void findByItemNmTest(){
@@ -94,7 +98,7 @@ class ItemRepositoryTest {
             System.out.println(item.toString());
         }
     }
-//    @Test
+    //    @Test
 //    @DisplayName("상품명 조회 테스트")
 //    public void findByItemNmTest(){
 //        this.createItemList(); //기존에 만들었던 테스트 상품을 만드는 메소드를 실행하여, 조회할 대상을 만듦
@@ -116,6 +120,7 @@ class ItemRepositoryTest {
         }
     }
 
+
     @Test
     @DisplayName("가격 LessThan 테스트")
     public void findByPriceLessThanTest(){
@@ -125,7 +130,7 @@ class ItemRepositoryTest {
             System.out.println(item.toString());
         }
     }
-//    @Test
+    //    @Test
 //    @DisplayName("가격 LessThan 테스트")
 //    public  void findByPriceLessThanTest(){
 //        this.createItemList();
@@ -134,6 +139,7 @@ class ItemRepositoryTest {
 //            System.out.println(item.toString());
 //        }
 //    }
+
 
     @Test
     @DisplayName("가격 내림차순 조회 테스트")
@@ -164,7 +170,7 @@ class ItemRepositoryTest {
             System.out.println(item.toString());
         }
     }
-//    @Test
+    //    @Test
 //    @DisplayName("@Query를 이용한 상품 조회 테스트")
 //    public void findByItemDetailTest(){
 //        this.createItemList();
@@ -186,11 +192,14 @@ class ItemRepositoryTest {
 //        }
 //    }
 
-
+    //p104영속성컨텐스트를 사용하기 위해 @위에 어노테이션-주입
+    //JPAQueryFacotry를 이용하여 쿼리를 동적생성
     @Test
     @DisplayName("Querydsl 조회 테스트1")
     public void queryDslTest(){
+        //생성자의 파라미터로 EntityManager객체를 넣어준다
         this.createItemList();
+      //Querydsl를 통해 쿼리를 생성하기 위해 플러그인을 통해 자동으로 생성된 QItem객체를 이용
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QItem qItem = QItem.item;
         JPAQuery<Item> query  = queryFactory.selectFrom(qItem)
@@ -231,12 +240,12 @@ class ItemRepositoryTest {
         }
     }
 
+
     @Test
     @DisplayName("상품 Querydsl 조회 테스트 2")
     public void queryDslTest2(){
 
         this.createItemList2();
-
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         QItem item = QItem.item;
         String itemDetail = "테스트 상품 상세 설명";

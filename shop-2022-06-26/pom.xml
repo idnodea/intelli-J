@@ -123,6 +123,7 @@
 				</configuration>
 			</plugin>
 
+			<!--p100 Qdomain  이후,우측 메이븐에서 리로드 얼메이븐 해준후, 라이프사이클-컴파일 실행-->
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>

@@ -25,40 +25,41 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
 //    //매개변수로는 검색할 때 사용할 상품명 변수를 넘겨줍니다
     List<Item> findByItemNm(String itemNm);
 
-
     //LessThan조건처리 상품명과 상품상세설명을 or조건을 이용하여 조회하는 쿼리 메소드
     List<Item> findByItemNmOrItemDetail(String itemNm, String itemDetail);
-
 
     //파라미터로 넘어온 price변수보다 값이 작은 상품데이터를 조회하는 쿼리 메소드입니다.
     List<Item> findByPriceLessThan(Integer price);
 
     List<Item> findByPriceLessThanOrderByPriceDesc(Integer price);
 
-    //JPQL
+    //jpql
     @Query("select i from Item i where i.itemDetail like " +
             "%:itemDetail% order by i.price desc")
     List<Item> findByItemDetail(@Param("itemDetail") String itemDetail);
-    //@Query어노테이션 안에 JPQL로 작성한 쿼리문을 넣어준다.
+//@Query어노테이션 안에 JPQL로 작성한 쿼리문을 넣어준다.
     //from 뒤에는 엔티티 클래스로 작성한 Item을 지정해주었고,
     //Item으로부터 데이터를 select하겠다는 것을 의미
 
 
     @Query(value="select * from item i where i.item_detail like " +
             "%:itemDetail% order by i.price desc", nativeQuery = true)
-    List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);////파라미터에 @Param어노테이션을 이용하여 파라미터로 넘어온 값을
-//// JPQL에 들어갈 변수로 지정해줄 수 있습니다.
+    List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
+    ////파라미터에 @Param어노테이션을 이용하여 파라미터로 넘어온 값을
+    //// JPQL에 들어갈 변수로 지정해줄 수 있습니다.
 ////현재는 itemDetail변수를 "like % %"사이에
 //// ":itemDetail"로 값이 들어가도록 작성
 //
 ////value 안에 네이티브 쿼리문을 작성하고 "nativeQuery = true"를 지정합니다
-//
+
+}
+
 ////Querydsl @Query어노테이션의 단점보완.
 ////Querydsl은 JPQL을 코드로 작성할 수 있도록 도와주는 빌더API
 ////문자열이 아닌 코드로 작성하므로 컴파일러의 도움을 받을 수 있음
 ////또한 오타발생여부를 쉽게 알 수 있으며 동적으로 쿼리생성까지 해줌
 
-    ////    두 쿼리 모두 item 테이블에서 itemDetail 필드에
+////    두 쿼리 모두 item 테이블에서 itemDetail 필드에
 ////    특정 문자열이 포함된 모든 상품을 찾고,
 ////    결과를 가격 내림차순으로 정렬하여 반환하는 기능을 수행합니다.
 ////    하지만 각각의 쿼리는 조금 다른 방식으로 이를 수행합니다.
@@ -101,6 +102,3 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
 ////    결과적으로, 이 메서드들은 상품 상세 설명에 특정 문자열이
 ////    포함된 상품 목록을 가격 내림차순으로 검색하여 반환하는 기능을
 ////    수행합니다.
-
-
-}
