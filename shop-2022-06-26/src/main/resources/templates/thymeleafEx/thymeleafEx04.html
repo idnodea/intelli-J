@@ -19,6 +19,10 @@
     </tr>
     </thead>
     <tbody>
+<!--  ex03에서 받은 반복에 대한 정보가 존재함.
+       인덱스가 짝수라면 status.even은 true,인덱스가 홀수라면 false
+       짝,홀 중 하나로 출력될 것임.
+-->
     <tr th:each="itemDto, status: ${itemDtoList}">
         <td th:switch="${status.even}">
             <span th:case=true>짝수</span>

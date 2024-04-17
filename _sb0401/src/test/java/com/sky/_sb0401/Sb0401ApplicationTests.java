@@ -1,5 +1,7 @@
 package com.sky._sb0401;
 
+import com.sky._sb0401.entity.Board;
+import com.sky._sb0401.entity.Member;
 import com.sky._sb0401.entity.Memo;
 import com.sky._sb0401.repository.MemoRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -19,10 +21,19 @@ class Sb0401ApplicationTests {
     @Autowired
     MemoRepository memoRepository;
 
-
-   //0404
     @PersistenceContext
     private EntityManager em;
+
+    @Test
+    @Transactional
+    void m1Test() {
+        Member member = Member.builder().name("홍길동").password("1234").role("사용자").userId("hong").build();
+        em.persist(member);
+        Board board = Board.builder().cnt(0L).title("처음 제목").content("처음 글 내용").member(member).build();
+        em.persist(board);
+
+    }
+
 
     @Test
     void emTest() {
@@ -30,19 +41,11 @@ class Sb0401ApplicationTests {
         System.out.println(memo);
     }
 
-//    @Test
-//    void emTest2(){
-//        List<Memo> list= em.createQuery(
-//                "select m from Memo m", Memo.class)
-//                .getResultList();
-//        list.stream().forEach(e->
-//        {
-//            System.out.println(e);
-//        });
-//    }
     @Test
     void emTest2() {
-        List<Memo> list = em.createQuery("from Memo m where m.mno > 5", Memo.class).getResultList();
+        List<Memo> list
+                = em.createQuery("from Memo m where m.mno > 5", Memo.class)
+                                                   .getResultList();
         list.stream().forEach(e->{
             System.out.println(e);
         });
@@ -50,11 +53,12 @@ class Sb0401ApplicationTests {
 
     @Test
     @Transactional
-    void emInsert(){
+    void emInsert() {
         Memo memo = Memo.builder()
-                .memoText("이건 em테스트")
+                .memoText("이것은 EM 테스트")
                 .build();
         em.persist(memo);
+
     }
 
     @Test

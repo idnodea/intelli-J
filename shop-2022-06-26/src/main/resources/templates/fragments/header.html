@@ -1,7 +1,10 @@
 <!DOCTYPE html>
+<!--스프링시큐리티추가p181-->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+<!--다른페이지에 포함시킬 영역을 th:fragment로 선언.-->
+<!--부트스트랩 p140추가-->
 <div th:fragment="header">
     <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -13,21 +16,25 @@
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+<!-- 관리자계정인 경우, 상품등록 상품관리메뉴를 볼 수 있게끔-->
                 <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
                     <a class="nav-link" href="/admin/item/new">상품 등록</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
                     <a class="nav-link" href="/admin/items">상품 관리</a>
                 </li>
+<!--장바구니와 구매이력 페이지의 경우 로그인(인증)했을 경우에만 보여주도록 합니다-->
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" href="/cart">장바구니</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" href="/orders">구매이력</a>
                 </li>
+<!-- 로그인하지 않은 경우, 로그인메뉴가 보이게-->
                 <li class="nav-item" sec:authorize="isAnonymous()">
                     <a class="nav-link" href="/members/login">로그인</a>
                 </li>
+<!-- 로그인을 한 경우, 로그아웃메뉴가 보이게-->
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" href="/members/logout">로그아웃</a>
                 </li>
@@ -41,3 +48,4 @@
 </div>
 
 </html>
+<!--page133타임리프 페이지 레이아웃-->

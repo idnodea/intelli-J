@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+//page182 인증되지 않은 사용자가 리소스요청시 Unauthorized에러발생하도록 
+//AuthenticationEntryPoint인터페이스 구현
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

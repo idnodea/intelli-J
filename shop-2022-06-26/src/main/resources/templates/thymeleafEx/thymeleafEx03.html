@@ -19,6 +19,9 @@
     </tr>
     </thead>
     <tbody>
+<!--    p123 status는 그냥 변수명. 꼭 status써야하는 건 아님-->
+<!--현재 순회중인 데이터의 인덱스를 출력-->
+<!--데이터-->
     <tr th:each="itemDto, status: ${itemDtoList}">
         <td th:text="${status.index}"></td>
         <td th:text="${itemDto.itemNm}"></td>

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+//p119 타임리프를 활용  상품데이터출력dto클래스
 @Getter
 @Setter
 public class ItemDto {

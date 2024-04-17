@@ -16,8 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 
+//page 175
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc  //MockMvc테스트
 @Transactional
 @TestPropertySource(locations="classpath:application-test.properties")
 class MemberControllerTest {
@@ -26,12 +27,12 @@ class MemberControllerTest {
     private MemberService memberService;
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvc mockMvc;//MockMvc클래스 이용. 가짜 객체인데,웹브라우저에서 요청하는 것처럼 테스트가능
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public Member createMember(String email, String password){
+    public Member createMember(String email, String password){ //로그인 전 회원등록메소드
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail(email);
         memberFormDto.setName("홍길동");

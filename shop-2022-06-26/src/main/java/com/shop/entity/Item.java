@@ -9,7 +9,14 @@ import javax.persistence.*;
 import com.shop.dto.ItemFormDto;
 import com.shop.exception.OutOfStockException;
 
-//page 75  엔티티매핑 관련 어노테이션
+//page 75  엔티티매핑 관련 어노테이션,
+// page203의 다대다매핑이 가능하지만 추가x
+//다대다 매핑을 사용하지 않는 건, 엔티티가 너무 복잡해지는 걸 막기위함 뿐만 아니라
+//연결테이블에 컬럼을 추가할 수 없기 때문
+//그 연결 테이블에는 조인 컬럼뿐 아니라 추가 컬럼들이 필요한 경우가 많기 때문.
+//또한 엔티티조회 시에, member엔티티에서 item을 조회하면 중간 테이블이 있기 때문에
+//어떤 쿼리문이 실행될지 예측하기도 쉽지 않습니다. 따라서  연결 테이블용 엔티티를 하나
+//생성한 후 일대다 다대일 매핑을 하면 된다(
 @Entity
 @Table(name="item")
 @Getter

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
 
+//page 202
 @Entity
 @Getter @Setter
 public class OrderItem extends BaseEntity {
@@ -15,11 +16,25 @@ public class OrderItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+ //하나의 상품은 여러 주문 상품으로 들어갈 수 있으므로 주문상품기준으로 다대일 단방향매핑
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
-
+//한 번의 주문에 여러 개의 상품을 주문할 수 있으므로 주문 상품 엔티티와 주문 엔티티를
+//다대일 단방향 매핑을 먼저 설정
+//다대일과 일대다는 반대관계. 주문상품 엔티티 기준에서 다대일 매핑이었으므로
+//주문 엔티티 기준에서는 주문 상품 엔티티와 일대다 관계로 매핑하면 됩니다.
+// 또한 양방향 매핑에서는 '연관 관계주인'을 설정해야 한다는 점이 중요
+    
+//노트로 확인
+//엔티티는 테이블과 다르다. 엔티티를 양방향 연관관계로 설정하면 객체의 참조는 둘인데
+//외래키는 하나이므로 둘 중 누가 외래키를 관리할지를 정해야함.
+//연관관계의 주인은 외래키가 있는 곳으로 설정
+//연관관계의 주인이 외래키를 관리(등록,수정,삭제)
+//주인이 아닌 쪽은 연관 관계 매핑 시 mappedBy속성의 값으로 연관관계의 주인설정
+//주인이 아닌 쪽은 읽기만 가능    
+    
     private int orderPrice; //주문가격
 
     private int count; //수량

@@ -9,14 +9,12 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-//@Builder(toBuilder = true) //기존필드의 일부만
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class MyData {
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;

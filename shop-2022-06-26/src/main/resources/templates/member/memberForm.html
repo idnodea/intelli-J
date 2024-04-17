@@ -1,3 +1,4 @@
+<!--page160-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -16,7 +17,7 @@
 <th:block layout:fragment="script">
 
     <script th:inline="javascript">
-        $(document).ready(function(){
+        $(document).ready(function(){   //가입실패하면 에러메시지로
             var errorMessage = [[${errorMessage}]];
             if(errorMessage != null){
                 alert(errorMessage);
@@ -52,6 +53,10 @@
         <div style="text-align: center">
             <button type="submit" class="btn btn-primary" style="">Submit</button>
         </div>
+<!-- 스프링시큐리티를 사용할 경우, 기본적으로 CSRF를 방어하기 위해, 모든 POST방식의 데이터전송에는 CSRF토큰값이 필요
+CSRF토큰은 실제서버에서 허용한 요청이 맞는지 확인하기 위한 토큰. 사용자의 세션에 임의 값을 저장하여,
+요청마다 그 값을 포함하여 전송하면 서버에서 세션에 저장된 값과 요청이 온 값이 일치하는지 확인하여 CSRF방어
+CSRF:크로스 사이트 리퀘스트 포저리:사이트간 위조요청-해커의공격-->
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
 

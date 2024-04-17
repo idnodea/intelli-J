@@ -14,10 +14,8 @@
     </select>
 
     <insert id="writeDao">
---         insert into simple_bbs (id, writer, title, content)
         insert into simple_bbs (writer, title, content)
---              values (simple_bbs_seq.nextval, #{param1}, #{param2}, #{param3})
-             values ( #{param1}, #{param2}, #{param3})
+             values (#{param1}, #{param2}, #{param3})
     </insert>
 
     <delete id="deleteDao">

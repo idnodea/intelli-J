@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<!--타임리프 레이아웃네임스페이스 추가-->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
+<!--page140부트스트랩추가-->
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link th:href="@{/css/layout1.css}" rel="stylesheet">
@@ -19,14 +20,19 @@
 
 </head>
 <body>
-
+<!-- page135 리플레이스속성은 해당속성이 선언된 html태그를 다른 html파일로 치환
+프레그먼트폴더 아래 헤더.html파일의 th:fragment=header  영역을 가져온다-->
     <div th:replace="fragments/header::header"></div>
 
+<!--layout에서 변경되는영역을 fragment로 설정. 앞으로 쇼핑몰에서 만들 페이지는 이 영역에 들어감-->
     <div layout:fragment="content" class="content">
 
     </div>
-
+<!-- 리플레이스속성은 해당속성이 선언된 html태그를 다른 html파일로 치환
+프레그먼트폴더 아래 헤더.html파일의 th:fragment=footer  영역을 가져온다-->
     <div th:replace="fragments/footer::footer"></div>
 
 </body>
 </html>
+<!--page133타임리프 페이지 레이아웃-->
+<!--타임리프ex07로-->

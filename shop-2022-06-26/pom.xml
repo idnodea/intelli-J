@@ -67,17 +67,25 @@
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 
+<!--page 133 타임리프 페이지 레이아웃
+하나의 레이아웃을 여러페이지에 똑같이 적용가능
+라이브러리 설치 완료 후에
+(수동으로)templates아래에 fragments폴더생성후 footer.html, header.html파일생성
+                       layouts폴더생성후 layout1.html 파일 생성
+-->
 		<dependency>
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>3.1.0</version>
 		</dependency>
 
+<!--page 147 시큐리티추가-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+<!--p164회원가입페이지에서 서버로 넘어오는 값을 검증해줌, 이름 비밀번호 등-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -90,6 +98,7 @@
 			<version>${spring-security.version}</version>
 		</dependency>
 
+<!--p178 로그인.로그아웃 화면 연동, 이후 헤더.html작성-->
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>

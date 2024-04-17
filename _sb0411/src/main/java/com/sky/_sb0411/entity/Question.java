@@ -20,6 +20,7 @@ public class Question {
 	private String title;
 
 	@ElementCollection
+	@OrderColumn
 	private List<String> options;
 	public boolean isChoice() {
 		return options != null && !options.isEmpty();
