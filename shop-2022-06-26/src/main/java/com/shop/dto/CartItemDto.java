@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+//page 332 상품상세페이지에서 장바구니에 담을 수량을 선택하고 
+//장바구니 담기버튼을 클릭할 때 상품이 장바구니에 담기는 기능을 구현
 @Getter @Setter
 public class CartItemDto {
 

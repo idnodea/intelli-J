@@ -4,15 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
 
-//page 202
+//page 202 다대일/일대다 매핑
 @Entity
 @Getter @Setter
 public class OrderItem extends BaseEntity {
+    //page228리그타임,업데이트타임변수 삭제, BaseEntity를 상속받도록 소스코드수정
 
     @Id @GeneratedValue
     @Column(name = "order_item_id")
     private Long id;
 
+    //page216 지연로딩
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
@@ -39,19 +41,27 @@ public class OrderItem extends BaseEntity {
 
     private int count; //수량
 
+    //page297 아이템엔티티수정 후, 주문할 상품과 주문수량을 통해 OrderItem객체를 만드는 메소드작성
     public static OrderItem createOrderItem(Item item, int count){
         OrderItem orderItem = new OrderItem();
-        orderItem.setItem(item);
+        orderItem.setItem(item); //주문할 상품 주문수량
         orderItem.setCount(count);
-        orderItem.setOrderPrice(item.getPrice());
-        item.removeStock(count);
+        
+        orderItem.setOrderPrice(item.getPrice()); 
+        //현재 시간 기준으로 상품가격을 주문가격으로 세팅
+        //쿠폰, 할인 적용은 일단 제외
+        
+        item.removeStock(count);//주문수량만큼 상품의 재고 수량을 감소시킴
         return orderItem;
+
     }
 
+    //주문 가격과 주문수량을 곱해서 해당 상품을 주문한 총 가격을 계산하는 메소드
     public int getTotalPrice(){
         return orderPrice*count;
     }
 
+    //주문을 취소할 경우, 주문수량만큼 상품의 재고를 증가시키는 메소드
     public void cancel() {
         this.getItem().addStock(count);
     }

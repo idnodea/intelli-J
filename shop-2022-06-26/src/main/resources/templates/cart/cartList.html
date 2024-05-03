@@ -1,3 +1,12 @@
+<!--page346
+조회한 장바구니 상품 정보를 이용하여 장바구니 목록을 보여주는 페이지를 구현
+장바구니 상품 선택 시 총 주문 금액 계산
+버튼 x를 클릭하면 장바구니에 담긴 상품삭제
+장바구니 상품 수량 변경 시 상품 금액 계산
+장바구니 상품 수량 변경시 장바구니에 담긴 상품 수량 업데이트
+장바구니 상품 주문
+장바구니 상품 전체 선택
+-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -15,13 +24,16 @@
 
         $(document).ready(function(){
             $("input[name=cartChkBox]").change( function(){
+            //주문할 상품을 체크하거나 해제할 경우, 총 주문금액을 구하는함수호출
                 getOrderTotalPrice();
             });
         });
 
         function getOrderTotalPrice(){
+            //총 주문금액을 구하는 함수
             var orderTotalPrice = 0;
             $("input[name=cartChkBox]:checked").each(function() {
+        //혅 체크된 장바구니 상품들의 가격과 수량을 곱해서 총 주문금액을 계산
                 var cartItemId = $(this).val();
                 var price = $("#price_" + cartItemId).attr("data-price");
                 var count = $("#count_" + cartItemId).val();
@@ -31,6 +43,8 @@
             $("#orderTotalPrice").html(orderTotalPrice+'원');
         }
 
+
+        //page357 updateCartItemCount()함수를 작성한 changeCount()함수 마지막에 추가
         function changeCount(obj){
             var count = obj.value;
             var cartItemId = obj.id.split('_')[1];
@@ -42,6 +56,8 @@
         }
 
         function checkAll(){
+        // 장바구니에 들어있는 전체상품을 체크하거나 체크해제하는 함수
+      //변경된 총 주문 금액을 계산하기 위해, 마지막에 getOrderTotalPrice()함수를 호출
             if($("#checkall").prop("checked")){
                 $("input[name=cartChkBox]").prop("checked",true);
             }else{
@@ -51,6 +67,7 @@
         }
 
         function updateCartItemCount(cartItemId, count){
+     //page356 장바구니상품의 수량을 수정할 경우, 업데이트요청을 하도록 추가
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -59,6 +76,8 @@
             $.ajax({
                 url      : url,
                 type     : "PATCH",
+                //부분 업데이트이므로 PATCH TYPE으로 설정
+
                 beforeSend : function(xhr){
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
@@ -81,6 +100,7 @@
             });
         }
 
+        //page359 화면내 X버튼 클릭 시, 해당 상품을 삭제하는 로직
         function deleteCartItem(obj){
             var cartItemId = obj.dataset.id;
             var token = $("meta[name='_csrf']").attr("content");
@@ -91,6 +111,7 @@
             $.ajax({
                 url      : url,
                 type     : "DELETE",
+                //장바구니 상품을 삭제하는경우이므로, DELETE TYPE을 사용
                 beforeSend : function(xhr){
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
@@ -99,6 +120,7 @@
                 cache   : false,
                 success  : function(result, status){
                     location.href='/cart';
+                    //삭제 요청이 정상적으로 처리되면 장바구니 페이지를 새로고침
                 },
                 error : function(jqXHR, status, error){
 
@@ -113,6 +135,7 @@
             });
         }
 
+//page366 cartList.html파일에 장바구니에서 선택한 상품주문을 요청하도록 자바스크립트 함수를 추가
         function orders(){
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -123,6 +146,7 @@
             var paramData = new Object();
 
             $("input[name=cartChkBox]:checked").each(function() {
+//체크된 장바구니 상품아이디를 전달하기 위해 dataList배열에 장바구니 상품아이디를 객체로 만들어서 저장
                 var cartItemId = $(this).val();
                 var data = new Object();
                 data["cartItemId"] = cartItemId;
@@ -130,6 +154,7 @@
             });
 
             paramData['cartOrderDtoList'] = dataList;
+//장바구니 상품 아이디를 저장하고 있는 dataList배열을 paramData객체에 추가
 
             var param = JSON.stringify(paramData);
 
@@ -147,6 +172,7 @@
                 success  : function(result, status){
                     alert("주문이 완료 되었습니다.");
                     location.href='/orders';
+                    //주문요청결과, 성공하면 구매이력페이지로 이동
                 },
                 error : function(jqXHR, status, error){
 
@@ -237,6 +263,7 @@
                                        onchange="changeCount(this)" class="form-control mr-2" >
                                 <button type="button" class="close" aria-label="Close">
                                     <span aria-hidden="true" th:data-id="${cartItem.cartItemId}" onclick="deleteCartItem(this)">&times;</span>
+                                <!-- de;eteCartItem()함수호출-->
                                 </button>
                             </span>
                         </div>

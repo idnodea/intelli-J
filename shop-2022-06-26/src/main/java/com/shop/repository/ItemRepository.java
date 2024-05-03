@@ -20,7 +20,13 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
         QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
     //p104 인터페이스 QuerydslPredicateExecutor상속추가
     //Querydsl 라이브러리를 사용하여 타입-세이프한 쿼리를 구성
-    //
+
+    //p273 상품조회조건 아이템서치dto->사용자정의인터페이스 아이템리포지토리커스텀
+    //-->아이템리포지토리커스텀 인터페이스를 구현하는 아이템리포지토리커스텀임플
+    //아이템리포지토리에서 아이템리포지토리커스텀 인터페이스를 상속
+    //아이템리포지토리에서 쿼리dsl로 구현한 상품관리 페이지목록을 불러오는
+    //getAdminItemPage() 메소드 사용가능
+
 
     //find+(엔티티이름)+By+변수이름
 //    //itemNm(상품명)으로 데이터를 조회하기 위해서 By 뒤에 필드명인 ItemNm을 메소드의 이름에 붙여준다

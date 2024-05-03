@@ -27,12 +27,14 @@ class MemberControllerTest {
     private MemberService memberService;
 
     @Autowired
-    private MockMvc mockMvc;//MockMvc클래스 이용. 가짜 객체인데,웹브라우저에서 요청하는 것처럼 테스트가능
+    private MockMvc mockMvc;
+    //MockMvc클래스 이용. 가짜 객체인데,웹브라우저에서 요청하는 것처럼 테스트가능
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public Member createMember(String email, String password){ //로그인 전 회원등록메소드
+    public Member createMember(String email, String password){ 
+        //로그인 전 회원등록메소드
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail(email);
         memberFormDto.setName("홍길동");
@@ -49,10 +51,12 @@ class MemberControllerTest {
         String password = "1234";
         this.createMember(email, password);
         mockMvc.perform(formLogin().userParameter("email")
+                //회원가입메소드를 실행 후, 가입된 회원 정보로 로그인이 되는지 테스트를 진행합니다.
+                //userParameter()를 이용하여 이메일 아이디로 세팅하고 로그인URL요청
                 .loginProcessingUrl("/members/login")
                 .user(email).password(password))
                 .andExpect(SecurityMockMvcResultMatchers.authenticated());
-    }
+    }           //로그인이 성공하여 인증되었다면 테스트 코드가 통과합니다.
 
     @Test
     @DisplayName("로그인 실패 테스트")

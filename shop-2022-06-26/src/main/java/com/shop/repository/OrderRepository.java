@@ -34,16 +34,23 @@ import java.util.List;
 // 부모엔티티와 자식 엔티티의 라이프 사이클이 유사할 때  cascade옵션활용하자
 //오더리포지토리로
 
+//page311 OrderHisDto생성 이후, OrderRepository인터페이스에 @Query어노테이션을 이용해 주문이력을 
+//조회하는 쿼리작성
+
+
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    //쿼리문법은 JPQL
     @Query("select o from Order o " +
             "where o.member.email = :email " +
             "order by o.orderDate desc"
     )
     List<Order> findOrders(@Param("email") String email, Pageable pageable);
+    //현재 로그인한 사용자의 주문 데이터를 페이징 조건에 맞춰서 조회
 
     @Query("select count(o) from Order o " +
             "where o.member.email = :email"
     )
     Long countOrder(@Param("email") String email);
+    //현재 로그인한 회원의 주문 개수가 몇 개인지 조회합니다
 }

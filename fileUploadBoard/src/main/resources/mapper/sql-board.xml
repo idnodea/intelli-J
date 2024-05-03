@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.fileuploadboard.board.mapper.BoardMapper">
+	<select id="selectBoardList" resultType="com.sky.fileuploadboard.board.dto.BoardDto">
+		<![CDATA[
+			SELECT
+				board_idx,
+				title,
+				hit_cnt,
+				DATE_FORMAT(created_datetime, '%Y.%m.%d %H:%i:%s') AS created_datetime
+			FROM
+				t_board
+			WHERE
+				deleted_yn = 'N'
+			ORDER BY board_idx DESC
+		]]>
+	</select>
+	
+	<insert id="insertBoard" parameterType="com.sky.fileuploadboard.board.dto.BoardDto" useGeneratedKeys="true" keyProperty="boardIdx">
+		<![CDATA[
+			INSERT INTO t_board
+			(
+				title, 
+				contents, 
+				created_datetime, 
+				creator_id
+			) 
+			VALUES 
+			(
+				#{title}, 
+				#{contents}, 
+				NOW(), 
+				'admin'			
+			)
+		]]>
+	</insert>
+	
+	<select id="selectBoardDetail" parameterType="int" resultType="com.sky.fileuploadboard.board.dto.BoardDto">
+		<![CDATA[
+			SELECT
+				board_idx,
+				title,
+				contents,
+				hit_cnt,
+				DATE_FORMAT(created_datetime, '%Y.%m.%d %H:%i:%s') AS created_datetime,
+				creator_id
+			FROM
+				t_board
+			WHERE
+				board_idx = #{boardIdx}
+				AND deleted_yn = 'N'
+		]]>
+	</select>
+	
+	<update id="updateHitCount" parameterType="int">
+		<![CDATA[
+			UPDATE 
+				t_board 
+			SET 
+				hit_cnt = hit_cnt + 1 
+			WHERE 
+				board_idx = #{boardIdx}
+		]]>
+	</update>
+	
+	<update id="updateBoard" parameterType="com.sky.fileuploadboard.board.dto.BoardDto">
+		<![CDATA[
+			UPDATE t_board SET 
+				title = #{title},
+				contents = #{contents},
+				updated_datetime = Now(),
+				updater_id = 'admin'
+			WHERE 
+				board_idx = #{boardIdx}
+		]]>
+	</update>
+	
+	<update id="deleteBoard" parameterType="int">
+		<![CDATA[
+			UPDATE t_board SET 
+				deleted_yn = 'Y',
+				updated_datetime = Now(),
+				updater_id = 'admin'
+			WHERE 
+				board_idx = #{boardIdx}
+		]]>
+	</update>
+	
+	<insert id="insertBoardFileList" parameterType="com.sky.fileuploadboard.board.dto.BoardFileDto">
+		<![CDATA[
+			INSERT INTO t_file
+			(
+				board_idx,
+				original_file_name,
+				stored_file_path,
+				file_size,
+				creator_id,
+				created_datetime
+			)
+			VALUES
+		]]>
+		<foreach collection="list" item="item" separator=",">
+			(
+				#{item.boardIdx},
+				#{item.originalFileName},
+				#{item.storedFilePath},
+				#{item.fileSize},
+				'admin',
+				NOW()
+			)
+		</foreach>
+	</insert>
+	
+	<select id="selectBoardFileList" parameterType="int" resultType="com.sky.fileuploadboard.board.dto.BoardFileDto">
+		<![CDATA[
+			SELECT
+				idx,
+				board_idx,
+				original_file_name,
+				stored_file_path,
+				FORMAT(ROUND(file_size / 1024), 0) AS file_size
+			FROM
+				t_file
+			WHERE
+				board_idx = #{boardIdx}
+				AND deleted_yn = 'N'
+		]]>
+	</select>
+	
+	<select id="selectBoardFileInformation" parameterType="map" resultType="com.sky.fileuploadboard.board.dto.BoardFileDto">
+		<![CDATA[
+			SELECT
+				original_file_name,
+				stored_file_path,
+				file_size
+			FROM
+				t_file
+			WHERE
+				idx = #{idx}
+				AND board_idx = #{boardIdx}
+				AND deleted_yn = 'N'
+		]]>
+	</select>
+<!--	이 코드는 MyBatis XML 매퍼 파일로, SQL 쿼리와 자바 객체 간의 매핑을 정의합니다. 주요 내용은 다음과 같습니다:-->
+
+<!--	selectBoardList 쿼리: 게시판 목록을 조회하는 쿼리입니다. t_board 테이블에서 deleted_yn이 'N'인 게시물을 최신순으로 조회합니다.-->
+<!--	insertBoard 쿼리: 게시글을 삽입하는 쿼리입니다. t_board 테이블에 게시글의 제목(title), 내용(contents), 생성일자(created_datetime), 작성자(creator_id)를 삽입합니다.-->
+<!--	selectBoardDetail 쿼리: 특정 게시글의 상세 정보를 조회하는 쿼리입니다. board_idx를 조건으로 하여 해당 게시글의 상세 정보를 조회합니다.-->
+<!--	updateHitCount 쿼리: 조회수를 업데이트하는 쿼리입니다. 해당 게시글의 조회수(hit_cnt)를 1 증가시킵니다.-->
+<!--	updateBoard 쿼리: 게시글을 수정하는 쿼리입니다. t_board 테이블에서 해당 게시글의 제목(title), 내용(contents), 수정일자(updated_datetime), 수정자(updater_id)를 수정합니다.-->
+<!--	deleteBoard 쿼리: 게시글을 삭제하는 쿼리입니다. 해당 게시글의 deleted_yn을 'Y'로 변경하여 삭제 처리합니다.-->
+<!--	insertBoardFileList 쿼리: 게시글에 첨부된 파일 정보를 삽입하는 쿼리입니다. t_file 테이블에 게시글 번호(board_idx), 원본 파일명(original_file_name), 저장된 파일 경로(stored_file_path), 파일 크기(file_size), 작성자(creator_id), 작성일자(created_datetime)를 삽입합니다.-->
+<!--	selectBoardFileList 쿼리: 특정 게시글에 첨부된 파일 목록을 조회하는 쿼리입니다. board_idx를 조건으로 하여 해당 게시글에 첨부된 파일 목록을 조회합니다.-->
+<!--	selectBoardFileInformation 쿼리: 특정 파일의 정보를 조회하는 쿼리입니다. idx와 board_idx를 조건으로 하여 해당 게시글에 첨부된 특정 파일의 정보를 조회합니다.-->
+
+
+</mapper>

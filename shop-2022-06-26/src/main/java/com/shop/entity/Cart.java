@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 import javax.persistence.*;
 
+//page191 일대일 단방향 매핑하기
+//page219 연관관계매핑-엔티티지연로딩 FetchType.LAZY
 @Entity
 @Table(name = "cart")
 @Getter @Setter
@@ -30,6 +32,9 @@ public class Cart extends BaseEntity {
     @JoinColumn(name="member_id")
     private Member member;
 
+    //회원 1명당 1개의 장바구니. 처음 장바구니에 상품을 담을 때는
+    //해당 회원의 장바구니를 생성해주어야함
+    //회원엔티티를 파라미터로 받아서 장바구니 엔티티를 생성하는 로직 추가
     public static Cart createCart(Member member){
         Cart cart = new Cart();
         cart.setMember(member);

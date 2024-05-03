@@ -3,6 +3,7 @@ package com.sky.controller;
 import com.sky.spring.DuplicateMemberException;
 import com.sky.spring.MemberRegisterService;
 import com.sky.spring.RegisterRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,7 @@ public class RegisterController {
 		if (!agree) {
 			return "register/step1";
 		}
-		model.addAttribute("registerRequest", new RegisterRequest());
+//		model.addAttribute("registerRequest", new RegisterRequest());
 		return "register/step2";
 	}
 

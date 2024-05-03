@@ -1,3 +1,5 @@
+<!--page292상품상세페이지-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -20,52 +22,61 @@
             });
         });
 
-        function calculateToalPrice(){
+        function calculateToalPrice(){ //현재 주문할 수량과 상품 한개당 가격을 곱해서 결제금액을 구해줌
             var count = $("#count").val();
             var price = $("#price").val();
             var totalPrice = price*count;
             $("#totalPrice").html(totalPrice + '원');
         }
 
+        //page 308 상품상세페이지에서 구현한 주문로직을 호출하는 코드작성
+        //form태그를 사용하여 submit방식으로 서버에 요청하게 되면 페이지가 새로고침이 되는 단점
+        //Ajax를 이용해 주문로직을 비동기방식으로 호출
+        //order()함수를 추가
         function order(){
             var token = $("meta[name='_csrf']").attr("content");
+//스프링 시큐리티를 사용할 경우, 기본적으로 POST방식의 데이터전송에는 CSRF토근값이 필요하므로 해당값들을 조회
             var header = $("meta[name='_csrf_header']").attr("content");
 
             var url = "/order";
-            var paramData = {
+            var paramData = {//주문할 상품의 아이디와 주문수량데이터를 전달할 객체 생성
                 itemId : $("#itemId").val(),
                 count : $("#count").val()
             };
 
-            var param = JSON.stringify(paramData);
+            var param = JSON.stringify(paramData); //서버에 보낼 주문 데이터를 json으로 변경
 
             $.ajax({
                 url      : url,
                 type     : "POST",
-                contentType : "application/json",
+                contentType : "application/json", //서버에 데이터를 보낼 형식을 json으로 지정
                 data     : param,
                 beforeSend : function(xhr){
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
                 },
-                dataType : "json",
+                dataType : "json", //서버에서 결과값으로 받을 데이터의 타입을 json으로 설정
                 cache   : false,
                 success  : function(result, status){
+                    //주문 로직호출이 성공하면 주문완료 메세지를 보여준 후, 메인페이지로 이동
                     alert("주문이 완료 되었습니다.");
                     location.href='/';
                 },
                 error : function(jqXHR, status, error){
 
                     if(jqXHR.status == '401'){
+                        //현재 로그인 상태가 아니라면 "로그인이용을 요하는 메세지"를 보여준후, 로그인페이지로
                         alert('로그인 후 이용해주세요');
                         location.href='/members/login';
                     } else{
-                        alert(jqXHR.responseText);
+                        alert(jqXHR.responseText); //주문시 에러발생할 때, 해당메시지호출
                     }
 
                 }
             });
         }
+
+        // page 341 상품상세페이지에서 구현한 장바구니 담기 로직을 호출
 
         function addCart(){
             var token = $("meta[name='_csrf']").attr("content");
@@ -193,6 +204,7 @@
     </div>
 
     <div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
+<!-- 등록된 상품 이미지를 반복구문을 통해 보여줌.-->
         <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="800">
     </div>
 

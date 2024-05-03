@@ -17,6 +17,11 @@ import com.shop.exception.OutOfStockException;
 //또한 엔티티조회 시에, member엔티티에서 item을 조회하면 중간 테이블이 있기 때문에
 //어떤 쿼리문이 실행될지 예측하기도 쉽지 않습니다. 따라서  연결 테이블용 엔티티를 하나
 //생성한 후 일대다 다대일 매핑을 하면 된다(
+
+//page260 상품업데이트로직구현. 엔티티클래스에 비즈니스로직을 추가
+
+//page297 상품을 주문할 경우 상품의 재고를 감소시키는 로직
+//엔티티클래스 안에 비즈니스로직을 메소드로 작성하면 코드의 재사용 및 데이터의 변경포인트를 한군데에서 관리하기 쉬움
 @Entity
 @Table(name="item")
 @Getter
@@ -54,14 +59,19 @@ public class Item extends BaseEntity {
     }
 
     public void removeStock(int stockNumber){
-        int restStock = this.stockNumber - stockNumber;
+        int restStock = this.stockNumber - stockNumber; 
+        //상품의 재고수량에서 주문 후 남은 재고수량을 구함
+        
         if(restStock<0){
             throw new OutOfStockException("상품의 재고가 부족 합니다. (현재 재고 수량: " + this.stockNumber + ")");
+            //상품의 재고가 주문 수량보다 작을 경우, 재고부족예외(exception패키지 내의 아웃오브스톡이셉션)발생
         }
-        this.stockNumber = restStock;
+        this.stockNumber = restStock; //주문 후 남은 재고 수량을 상품의 현재 재고 값으로 할당
     }
 
+    //page323 상품의 재고를 증가시키는 메소드
     public void addStock(int stockNumber){
+        
         this.stockNumber += stockNumber;
     }
 

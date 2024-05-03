@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.Optional;
 
 //회원가입후 메인페이지로 갈 수 있도록.
+//page284 메인콘트롤러수정
 @Controller
 @RequiredArgsConstructor
 public class MainController {
